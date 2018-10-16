@@ -1,0 +1,123 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>MyDex</title>
+        <script src="jquery.js"></script>
+        <script src="pokeapi-js-wrapper/dist/index.js"></script>
+        
+        <link href="css/style.css" type="text/css" rel="stylesheet">
+        <link href="css/reset.css" type="text/css" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    </head>
+    <body style=" background-color: #e8e8e8;">
+        <header>
+            <div id="logo">
+                MyDex
+            </div>
+        </header>
+        
+        
+        <div id="containerMain">
+            
+        </div>
+         <a href="#modal1">Modal</a>
+        <script>
+            var obj;
+            var docMain = document.getElementById('containerMain');
+          
+            const baseURL = "http://pokeapi.co/api/v2/";
+             var data;
+             var i = 1;
+             while(i <= 151) {
+            $.ajax({
+               
+                  url: baseURL + 'pokemon/' + i,
+                  dataType:'json',
+                    
+                  success: function(dados) {
+                    obj = dados;
+                   // console.log(obj);
+                    
+                   
+                     var divCol = document.createElement('DIV');
+                        divCol.className = "col s12 m7 ";
+                
+                    var h2 = document.createElement('h2');
+                      h2.className = "header";
+                      h2.id="pokeName";
+                      h2.innerHTML = "#" + obj.id + " " + obj.name;
+                      divCol.appendChild(h2);
+                    
+                      divCard = document.createElement("DIV");
+                      divCard.className="card horizontal";
+                      divImg = document.createElement("div");
+                      divImg.className="card-image";
+                      img = document.createElement("img");
+                      img.id="pokeImg";
+                
+                      img.setAttribute('src', obj.sprites.front_default);
+                      divImg.appendChild(img);
+                      
+                      
+                      
+                      divStack = document.createElement("div");
+                      divStack.className="card-stacked";
+                      divContent = document.createElement("div");
+                      divContent.className="card-content";
+                      p = document.createElement('P');
+                      p.id="pokeInfo";
+                      p.innerHTML ="Types: " + getTypes(obj);
+                      divContent.appendChild(p);
+                   
+                      divStack.appendChild(divContent);
+                
+                      divAction = document.createElement("DIV");
+                      divAction.className="card-action";
+                      a = document.createElement("A");
+                      a.id = "modal";
+                      a.setAttribute('href', '#');
+                      a.innerHTML= "+Detalhes";
+                      divAction.appendChild(a);
+                      divStack.appendChild(divAction);
+                        
+                      divCard.appendChild(divImg);
+                      divCard.appendChild(divStack);
+
+                      divCol.appendChild(divCard);
+
+                      docMain.appendChild(divCol);
+                      
+                      id = obj.id;
+                      
+                      //alert(id);
+                      
+                  }
+               
+             });
+             i++;
+            }
+            
+            //pegando os tipos sendo eles um, ou dois tipos
+            function getTypes(obj) {
+                if(obj.types.length > 1) {
+                    return  obj.types["0"].type.name + ", " +
+                         obj.types["1"].type.name;
+                } else {
+                     return  obj.types["0"].type.name;
+                }
+            }
+            
+             
+
+        </script>
+        
+        <script>
+            $(document).ready(function(){
+                $('#modal').click(function() {
+                   alert('oi');
+                });
+              });
+        </script>
+        
+    </body>
+</html>
